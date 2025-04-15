@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    <script>
+      const cities = [];
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+      fetch(endpoint)
+        .then((res) => res.json())
+        .then((data) => {
+          cities.push(...data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      const filterCiti = function () {
+        const regexp = this.value ? new RegExp(this.value, "gi") : null;
+        return displayCities(
+          cities.filter((citi) => {
+            return citi.city.match(regexp) || citi.state.match(regexp);
+          }),
+          regexp,
+          this.value
+        );
+      };
+      const displayCities = function (citiList, regexp, keyInput) {
+        let textCiti = "";
+        citiList.forEach((value) => {
+          textCiti += `<li>${value.city.replace(
+            regexp,
+            `<span class="hl">${keyInput}</span>`
+          )}, ${value.state.replace(
+            regexp,
+            `<span class="hl">${keyInput}</span>`
+          )}</li>`;
+        });
+        document.querySelector(".suggestions").innerHTML = textCiti;
+      };
+
+      document.querySelector(".search").addEventListener("input", filterCiti);
+      // const rex = new RegExp("an", "gi");
+      // console.log(rex);
+      // const str = "An accept string";
+      // console.log(str.match(rex));
+    </script>
+  </body>
+</html>
