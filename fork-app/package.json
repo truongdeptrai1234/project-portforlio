@@ -1,0 +1,22 @@
+{
+  "name": "fork-app",
+  "version": "1.0.0",
+  "description": "#project",
+  "scripts": {
+    "test": "echo \"No tests implemented yet\"",
+    "start": "npx parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "mr.truong",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.14.4",
+    "parcel": "^2.14.4",
+    "sass": "^1.86.3",
+    "svgo": "^3.3.2"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.14.1",
+    "core-js": "^3.41.0"
+  }
+}
