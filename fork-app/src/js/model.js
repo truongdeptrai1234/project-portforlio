@@ -2,6 +2,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 const state = {
+  recipe: {},
   data: {},
 };
 
@@ -13,6 +14,7 @@ const loadRecipe = async function (id) {
   );
   if (!recipe.ok) throw new Error(`error :${recipe.status}`);
   const { data } = await recipe.json();
-  return data;
+  console.log(data);
+  state.recipe = data;
 };
-export { loadRecipe };
+export { state, loadRecipe };

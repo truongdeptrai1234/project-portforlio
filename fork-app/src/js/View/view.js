@@ -1,13 +1,14 @@
 import icons from "url:../../img/icons.svg";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-
+import Fraction from "fraction.js";
 class viewRecipes {
   //public field
   //private field
   #data;
+  #parentEle = document.querySelector(".recipe");
   //method
-  loadSpinner(parentEle) {
+  loadSpinner() {
     const mark = `
       <div class="spinner">
         <svg>
@@ -15,18 +16,41 @@ class viewRecipes {
         </svg>
       </div>
       `;
-    parentEle.innerHTML = "";
-    parentEle.insertAdjacentHTML("afterbegin", mark);
+    this.#clear();
+    this.#parentEle.insertAdjacentHTML("afterbegin", mark);
   }
-  renderRecipe(parentEle, data = "") {
+  render(data = "") {
     if (!data) return;
     this.#data = data;
-    const html = this.#recipeContent(this.#data);
-    parentEle.innerHTML = "";
-    parentEle.insertAdjacentHTML("afterbegin", html);
+
+    const html = this.#recipeRender(this.#data);
+    this.#clear();
+    this.#parentEle.insertAdjacentHTML("afterbegin", html);
     return this;
   }
-  #recipeContent(data = "") {
+  #clear() {
+    this.#parentEle.innerHTML = "";
+  }
+  #generateHtmlIng(data) {
+    return data.recipe.ingredients
+      .map(
+        (ing) => `
+        <li class="recipe__ingredient">
+          <svg class="recipe__icon">
+            <use href="/icons.21bad73c.svg#icon-check"></use>
+          </svg>
+          <div class="recipe__quantity">${
+            ing.quantity ? new Fraction(ing.quantity).toFraction() : ""
+          }</div>
+          <div class="recipe__description">
+            <span class="recipe__unit">${ing.unit ?? ""}</span>
+            ${ing.description ?? ""}
+          </div>
+        </li>`
+      )
+      .join("");
+  }
+  #recipeRender(data = "") {
     if (!data) return;
     return `<figure class="recipe__fig">
         <img src="${data.recipe.image_url}" alt="${
@@ -85,22 +109,7 @@ class viewRecipes {
           <div class="recipe__ingredients">
             <h2 class="heading--2">Recipe ingredients</h2>
             <ul class="recipe__ingredient-list">
-
-              ${data.recipe.ingredients
-                .map(
-                  (ing) => `
-                  <li class="recipe__ingredient">
-                    <svg class="recipe__icon">
-                      <use href="/icons.21bad73c.svg#icon-check"></use>
-                    </svg>
-                    <div class="recipe__quantity">${ing.quantity ?? ""}</div>
-                    <div class="recipe__description">
-                      <span class="recipe__unit">${ing.unit ?? ""}</span>
-                      ${ing.description ?? ""}
-                    </div>
-                  </li>`
-                )
-                .join("")}
+              ${this.#generateHtmlIng(data)}
             
             </ul>
           </div>

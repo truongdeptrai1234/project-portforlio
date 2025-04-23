@@ -3,7 +3,6 @@ import "regenerator-runtime/runtime";
 
 import * as model from "./model.js";
 import view from "./View/view.js";
-const recipeContainer = document.querySelector(".recipe");
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -16,9 +15,10 @@ const timeout = function (s) {
 const loadRecipeController = async function () {
   try {
     const id = window.location.hash.slice(1);
-    view.loadSpinner(recipeContainer);
-    const data = await model.loadRecipe(id);
-    view.renderRecipe(recipeContainer, data);
+    view.loadSpinner();
+    await model.loadRecipe(id);
+
+    view.render(model.state.recipe);
     // 664c8f193e7aa067e94e8297
     // 664c8f193e7aa067e94e897b
   } catch (error) {
