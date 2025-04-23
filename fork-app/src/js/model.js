@@ -1,5 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { API_URL, TIME_OUT } from "./config";
+import { getJSON, timeout } from "./View/helper";
 
 const state = {
   recipe: {},
@@ -7,14 +9,15 @@ const state = {
 };
 
 const loadRecipe = async function (id) {
-  if (!id) return;
-
-  const recipe = await fetch(
-    `https://forkify-api.jonas.io/api/v2/recipes/${id}`
-  );
-  if (!recipe.ok) throw new Error(`error :${recipe.status}`);
-  const { data } = await recipe.json();
-  console.log(data);
-  state.recipe = data;
+  try {
+    if (!id) return;
+    const data = await Promise.race([
+      getJSON(`${API_URL}/${id}`),
+      timeout(TIME_OUT),
+    ]);
+    state.recipe = data;
+  } catch (error) {
+    console.log(error.message + "🚨🚨");
+  }
 };
 export { state, loadRecipe };

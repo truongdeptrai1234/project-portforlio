@@ -28,6 +28,9 @@ class viewRecipes {
     this.#parentEle.insertAdjacentHTML("afterbegin", html);
     return this;
   }
+  addLoadRecipeHandler(handler) {
+    window.addEventListener("hashchange", handler);
+  }
   #clear() {
     this.#parentEle.innerHTML = "";
   }
