@@ -2,11 +2,14 @@ import icons from "url:../../img/icons.svg";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import Fraction from "fraction.js";
+
 class viewRecipes {
   //public field
   //private field
   #data;
   #parentEle = document.querySelector(".recipe");
+  #errorMessage = "Could not find the recipe 🍕🍕";
+  #successMessage = "";
   //method
   loadSpinner() {
     const mark = `
@@ -30,6 +33,19 @@ class viewRecipes {
   }
   addLoadRecipeHandler(handler) {
     window.addEventListener("hashchange", handler);
+  }
+  renderError(message = this.#errorMessage) {
+    const mark = `<div class="error">
+        <div>
+          <svg>
+            <use href="${icons}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+    this.#clear();
+    this.#parentEle.insertAdjacentHTML("afterbegin", mark);
   }
   #clear() {
     this.#parentEle.innerHTML = "";

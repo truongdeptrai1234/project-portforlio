@@ -13,6 +13,7 @@ const loadRecipeController = async function () {
     view.render(model.state.recipe);
   } catch (error) {
     console.log(error.message);
+    view.renderError();
   }
 };
 

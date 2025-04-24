@@ -17,7 +17,7 @@ const loadRecipe = async function (id) {
     ]);
     state.recipe = data;
   } catch (error) {
-    console.log(error.message + "🚨🚨");
+    throw error;
   }
 };
 export { state, loadRecipe };
