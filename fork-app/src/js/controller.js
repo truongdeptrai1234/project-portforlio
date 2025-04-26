@@ -5,6 +5,7 @@ import * as model from "./model.js";
 import viewRecipes from "./View/viewRecipes.js";
 import viewSearch from "./View/viewSearch.js";
 import viewSearchResult from "./View/viewSearchResult.js";
+import viewPagResult from "./View/viewPagResult.js";
 
 const loadRecipeController = async function () {
   try {
@@ -24,15 +25,23 @@ const searchController = async function () {
     const query = viewSearch.getQuery();
     if (!query) return;
     await model.loadSearchResult(query);
-    viewSearchResult.render(model.state.search.result);
   } catch (error) {
     console.log(error);
     viewSearchResult.renderError();
   }
 };
+const paginationController = async function () {
+  try {
+    const page = model.state.search.page;
+    viewSearchResult.render(model.getPaginationPage(page));
+    viewPagResult.render();
+  } catch (error) {
+    console.log(error);
+  }
+};
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
-  viewSearch.addLoadSearchHandler(searchController);
+  viewSearch.addLoadSearchHandler(searchController, paginationController);
 };
 init();
 // https://forkify-api.herokuapp.com/v2

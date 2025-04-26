@@ -56,10 +56,13 @@ export default class View {
   addLoadRecipeHandler(handler) {
     window.addEventListener("hashchange", handler);
   }
-  addLoadSearchHandler(handler) {
-    this._parentEle.addEventListener("submit", function (e) {
+  addLoadSearchHandler(...handlers) {
+    this._parentEle.addEventListener("submit", async function (e) {
       e.preventDefault();
-      handler();
+      for (const handler of handlers) {
+        await handler();
+      }
     });
   }
+  addloadPaghandler(handler) {}
 }
