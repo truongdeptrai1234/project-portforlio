@@ -1,157 +1,65 @@
-import icons from "url:../../img/icons.svg";
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import Fraction from "fraction.js";
+import icons from "url:../../img/icons.svg"; // Parcel 2
 
-class viewRecipes {
-  //public field
+export default class View {
   //private field
-  #data;
-  #parentEle = document.querySelector(".recipe");
-  #errorMessage = "Could not find the recipe 🍕🍕";
-  #successMessage = "";
-  //method
-  loadSpinner() {
-    const mark = `
-      <div class="spinner">
-        <svg>
-          <use href="${icons}#icon-loader"></use>
-        </svg>
-      </div>
-      `;
-    this.#clear();
-    this.#parentEle.insertAdjacentHTML("afterbegin", mark);
-  }
-  render(data = "") {
-    if (!data) return;
-    this.#data = data;
+  _data;
+  _parentEle;
+  _errorMessage;
+  _successMessage;
+  //public field
 
-    const html = this.#recipeRender(this.#data);
-    this.#clear();
-    this.#parentEle.insertAdjacentHTML("afterbegin", html);
-    return this;
+  //method
+  loadingSpinner() {
+    const mark = `
+        <div class="spinner">
+          <svg>
+            <use href="${icons}#icon-loader"></use>
+          </svg>
+        </div>
+        `;
+    this._clear();
+    this._parentEle.insertAdjacentHTML("afterbegin", mark);
   }
-  addLoadRecipeHandler(handler) {
-    window.addEventListener("hashchange", handler);
-  }
-  renderError(message = this.#errorMessage) {
-    const mark = `<div class="error">
+  renderError() {
+    const mark = `
+      <div class="error">
         <div>
           <svg>
             <use href="${icons}#icon-alert-triangle"></use>
           </svg>
         </div>
-        <p>${message}</p>
-      </div>
-    `;
-    this.#clear();
-    this.#parentEle.insertAdjacentHTML("afterbegin", mark);
+        <p>${this._errorMessage}</p>
+      </div>`;
+    this._clear();
+    this._parentEle.insertAdjacentHTML("afterbegin", mark);
   }
-  #clear() {
-    this.#parentEle.innerHTML = "";
-  }
-  #generateHtmlIng(data) {
-    return data.recipe.ingredients
-      .map(
-        (ing) => `
-        <li class="recipe__ingredient">
-          <svg class="recipe__icon">
-            <use href="/icons.21bad73c.svg#icon-check"></use>
-          </svg>
-          <div class="recipe__quantity">${
-            ing.quantity ? new Fraction(ing.quantity).toFraction() : ""
-          }</div>
-          <div class="recipe__description">
-            <span class="recipe__unit">${ing.unit ?? ""}</span>
-            ${ing.description ?? ""}
-          </div>
-        </li>`
-      )
-      .join("");
-  }
-  #recipeRender(data = "") {
-    if (!data) return;
-    return `<figure class="recipe__fig">
-        <img src="${data.recipe.image_url}" alt="${
-      data.recipe.title
-    }" class="recipe__img" />
-            <h1 class="recipe__title">
-              <span>${data.recipe.title}</span>
-            </h1>
-          </figure>
-  
-          <div class="recipe__details">
-            <div class="recipe__info">
-              <svg class="recipe__info-icon">
-                <use href="/icons.21bad73c.svg#icon-clock"></use>
-              </svg>
-              <span class="recipe__info-data recipe__info-data--minutes">${
-                data.recipe.cooking_time
-              }</span>
-              <span class="recipe__info-text">minutes</span>
-            </div>
-            <div class="recipe__info">
-              <svg class="recipe__info-icon">
-                <use href="/icons.21bad73c.svg#icon-users"></use>
-              </svg>
-              <span class="recipe__info-data recipe__info-data--people">${
-                data.recipe.servings
-              }</span>
-              <span class="recipe__info-text">servings</span>
-  
-              <div class="recipe__info-buttons">
-                <button class="btn--tiny btn--increase-servings">
-                  <svg>
-                    <use href="/icons.21bad73c.svg#icon-minus-circle"></use>
-                  </svg>
-                </button>
-                <button class="btn--tiny btn--increase-servings">
-                  <svg>
-                    <use href="/icons.21bad73c.svg#icon-plus-circle"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-  
-            <div class="recipe__user-generated">
+  renderMessage(message = this._successMessage) {
+    const mark = `
+          <div class="message">
+            <div>
               <svg>
-                <use href="/icons.21bad73c.svg#icon-user"></use>
+                <use href="${icons}#icon-smile"></use>
               </svg>
             </div>
-            <button class="btn--round">
-              <svg class="">
-                <use href="/icons.21bad73c.svg#icon-bookmark-fill"></use>
-              </svg>
-            </button>
+            <p>${message}</p>
           </div>
-  
-          <div class="recipe__ingredients">
-            <h2 class="heading--2">Recipe ingredients</h2>
-            <ul class="recipe__ingredient-list">
-              ${this.#generateHtmlIng(data)}
-            
-            </ul>
-          </div>
-  
-          <div class="recipe__directions">
-            <h2 class="heading--2">How to cook it</h2>
-            <p class="recipe__directions-text">
-              This recipe was carefully designed and tested by
-              <span class="recipe__publisher">The Pioneer Woman</span>. Please check out
-              directions at their website.
-            </p>
-            <a
-              class="btn--small recipe__btn"
-              href="http://thepioneerwoman.com/cooking/pasta-with-tomato-cream-sauce/"
-              target="_blank"
-            >
-              <span>Directions</span>
-              <svg class="search__icon">
-                <use href="/icons.21bad73c.svg#icon-arrow-right"></use>
-              </svg>
-            </a>
-          </div>`;
+      `;
+    this._clear();
+    this._parentEle.insertAdjacentHTML("afterbegin", mark);
+  }
+  _clear() {
+    this._parentEle.innerHTML = "";
+  }
+  _clearInput() {
+    this._parentEle.querySelector(".search__field").value = "";
+  }
+  addLoadRecipeHandler(handler) {
+    window.addEventListener("hashchange", handler);
+  }
+  addLoadSearchHandler(handler) {
+    this._parentEle.addEventListener("submit", function (e) {
+      e.preventDefault();
+      handler();
+    });
   }
 }
-
-export default new viewRecipes();

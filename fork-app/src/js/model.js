@@ -5,7 +5,10 @@ import { getJSON, timeout } from "./View/helper";
 
 const state = {
   recipe: {},
-  data: {},
+  search: {
+    query: "",
+    result: [],
+  },
 };
 
 const loadRecipe = async function (id) {
@@ -20,4 +23,17 @@ const loadRecipe = async function (id) {
     throw error;
   }
 };
-export { state, loadRecipe };
+const loadSearchResult = async function (query) {
+  try {
+    if (!query) return;
+    const data = await Promise.race([
+      getJSON(`${API_URL}?search=${query}`),
+      timeout(TIME_OUT),
+    ]);
+    state.search.query = query;
+    state.search.result = data.recipes;
+  } catch (error) {
+    throw error;
+  }
+};
+export { state, loadRecipe, loadSearchResult };
