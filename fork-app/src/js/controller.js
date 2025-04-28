@@ -34,14 +34,19 @@ const paginationController = async function () {
   try {
     const page = model.state.search.page;
     viewSearchResult.render(model.getPaginationPage(page));
-    viewPagResult.render();
+    viewPagResult.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
 };
+const pageUpdateController = async function (btnType) {
+  btnType === "next" ? model.state.search.page++ : model.state.search.page--;
+  paginationController();
+};
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
   viewSearch.addLoadSearchHandler(searchController, paginationController);
+  viewPagResult.addButtonPagHandler(pageUpdateController);
 };
 init();
 // https://forkify-api.herokuapp.com/v2

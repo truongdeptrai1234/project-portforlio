@@ -59,10 +59,24 @@ export default class View {
   addLoadSearchHandler(...handlers) {
     this._parentEle.addEventListener("submit", async function (e) {
       e.preventDefault();
-      for (const handler of handlers) {
-        await handler();
+      try {
+        for (const handler of handlers) {
+          await handler();
+        }
+      } catch (err) {
+        console.log(err);
       }
     });
   }
-  addloadPaghandler(handler) {}
+
+  addButtonPagHandler(handler) {
+    this._parentEle.addEventListener("click", function (e) {
+      if (e.target.closest(".pagination__btn--prev")) {
+        handler("prev");
+      }
+      if (e.target.closest(".pagination__btn--next")) {
+        handler("next");
+      }
+    });
+  }
 }

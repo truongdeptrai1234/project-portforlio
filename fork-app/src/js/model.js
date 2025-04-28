@@ -52,4 +52,5 @@ const getPaginationPage = function (page) {
     console.log(error);
   }
 };
+
 export { state, loadRecipe, loadSearchResult, getPaginationPage };
