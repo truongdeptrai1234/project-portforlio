@@ -7,6 +7,7 @@ class ViewPagResult extends View {
   _parentEle = document.querySelector(".pagination");
   _errorMessage = "";
   //method
+
   render(data) {
     this._data = data;
     this._clear();

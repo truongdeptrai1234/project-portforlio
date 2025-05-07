@@ -10,9 +10,9 @@ import viewPagResult from "./View/viewPagResult.js";
 const loadRecipeController = async function () {
   try {
     const id = window.location.hash.slice(1);
+    viewSearchResult.updateDOM(model.state.search.pagResult, id);
     viewRecipes.loadingSpinner();
     await model.loadRecipe(id);
-
     viewRecipes.render(model.state.recipe);
   } catch (error) {
     console.log(error.message);
@@ -46,8 +46,7 @@ const pageUpdateController = async function (btnType) {
 const updateServingsController = function (newServings) {
   if (newServings < 1) return;
   model.updateServings(newServings);
-
-  viewRecipes.render(model.state.recipe);
+  viewRecipes.updateDOM(model.state.recipe); //not re-render the whole DOM
 };
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);

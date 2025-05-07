@@ -12,8 +12,24 @@ class viewRecipes extends View {
   _successMessage = "";
   //method
   updateDOM(data) {
-    const newRecipe = this._recipeRender(data);
-    console.log(newRecipe);
+    const curDOM = Array.from(this._parentEle.querySelectorAll("*"));
+    //create a virtual DOM
+    const newDOM = Array.from(
+      document
+        .createRange()
+        .createContextualFragment(this._recipeRender(data))
+        .querySelectorAll("*")
+    );
+    //compare two DOM
+    curDOM.forEach((cur, i) => {
+      if (
+        cur.firstChild?.nodeValue.trim() !==
+        newDOM[i].firstChild?.nodeValue.trim()
+      ) {
+        cur.textContent = newDOM[i].textContent;
+        cur.classList = newDOM[i].classList;
+      }
+    });
   }
   render(data = "") {
     if (!data) return;
