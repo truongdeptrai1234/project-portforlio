@@ -2,13 +2,10 @@ import icons from "url:../../img/icons.svg"; // Parcel 2
 
 export default class View {
   //private field
-  _data;
-  _parentEle;
-  _errorMessage;
-  _successMessage;
   //public field
 
   //method
+
   loadingSpinner() {
     const mark = `
         <div class="spinner">
@@ -77,6 +74,16 @@ export default class View {
       if (e.target.closest(".pagination__btn--next")) {
         handler("next");
       }
+    });
+  }
+  addUpdateServingsHandler(handler) {
+    const thisRecipe = this;
+    this._parentEle.addEventListener("click", function (e) {
+      let serving = +thisRecipe._parentEle.querySelector(
+        ".recipe__info-data--people"
+      ).textContent;
+      if (e.target.closest(".btn--increase-servings")) handler(++serving);
+      if (e.target.closest(".btn--decrease-servings")) handler(--serving);
     });
   }
 }

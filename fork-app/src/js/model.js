@@ -52,5 +52,16 @@ const getPaginationPage = function (page) {
     console.log(error);
   }
 };
-
-export { state, loadRecipe, loadSearchResult, getPaginationPage };
+const updateServings = function (newServings) {
+  state.recipe.recipe.ingredients.forEach((ing) => {
+    ing.quantity = (ing.quantity * newServings) / state.recipe.recipe.servings;
+  });
+  state.recipe.recipe.servings = newServings;
+};
+export {
+  state,
+  loadRecipe,
+  loadSearchResult,
+  getPaginationPage,
+  updateServings,
+};

@@ -6,15 +6,20 @@ import View from "./view";
 class viewRecipes extends View {
   //public field
   //private field
+  _data;
   _parentEle = document.querySelector(".recipe");
   _errorMessage = "Could not find the recipe 🍕🍕";
   _successMessage = "";
   //method
+  updateDOM(data) {
+    const newRecipe = this._recipeRender(data);
+    console.log(newRecipe);
+  }
   render(data = "") {
     if (!data) return;
     this._data = data;
 
-    const html = this.#recipeRender(this._data);
+    const html = this._recipeRender(this._data);
     this._clear();
     this._parentEle.insertAdjacentHTML("afterbegin", html);
     return this;
@@ -39,7 +44,7 @@ class viewRecipes extends View {
       )
       .join("");
   }
-  #recipeRender(data = "") {
+  _recipeRender(data = "") {
     if (!data) return;
     return `<figure class="recipe__fig">
         <img src="${data.recipe.image_url}" alt="${
@@ -68,9 +73,9 @@ class viewRecipes extends View {
                 data.recipe.servings
               }</span>
               <span class="recipe__info-text">servings</span>
-  
+              
               <div class="recipe__info-buttons">
-                <button class="btn--tiny btn--increase-servings">
+                <button class="btn--tiny btn--decrease-servings">
                   <svg>
                     <use href="/icons.21bad73c.svg#icon-minus-circle"></use>
                   </svg>
@@ -81,6 +86,7 @@ class viewRecipes extends View {
                   </svg>
                 </button>
               </div>
+              
             </div>
   
             <div class="recipe__user-generated">

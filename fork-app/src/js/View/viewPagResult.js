@@ -3,6 +3,7 @@ import View from "./view";
 
 class ViewPagResult extends View {
   //protected field
+  _data = "";
   _parentEle = document.querySelector(".pagination");
   _errorMessage = "";
   //method
@@ -14,6 +15,7 @@ class ViewPagResult extends View {
       this.#generateHtml(this._data)
     );
   }
+
   #checkPagination(data) {
     if (data.page === 1) return this._buttonNextMarkupHtml(data);
     if (data.page > 1 && data.page < data.totalPage)
