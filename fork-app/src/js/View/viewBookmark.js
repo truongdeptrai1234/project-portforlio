@@ -1,11 +1,11 @@
 import icons from "url:../../img/icons.svg";
 import View from "./view";
-class viewSearchResult extends View {
+class viewBookmark extends View {
   //private field
-
-  _parentEle = document.querySelector(".results");
+  _data;
+  _parentEle = document.querySelector(".bookmarks__list");
   _errorMessage = "recipe list not found, please try again 🍟🍟";
-  _successMessage = "";
+  _successMessage = "No bookmarks yet. Find a nice recipe and bookmark it :)";
   //method
   updateDOM(data, hashId) {
     const curDOM = Array.from(this._parentEle.querySelectorAll("*"));
@@ -28,7 +28,9 @@ class viewSearchResult extends View {
     });
   }
   render(data, hashId = "") {
-    if (!data || data.length === 0) return this.renderError();
+    this._parentEle.innerHTML = this.renderMessage(this._successMessage);
+    if (!data || data.length === 0)
+      return this.renderMessage(this._successMessage);
     this._data = data;
     this._clear();
     const mark = this.#renderListRecipe(this._data, hashId);
@@ -38,14 +40,14 @@ class viewSearchResult extends View {
   #generateHtml(data = "", hashId) {
     return `<li class="preview">
             <a class="preview__link ${
-              data.id === hashId ? "preview__link--active" : ""
-            }" href="#${data.id}">
+              data.recipe.id === hashId ? "preview__link--active" : ""
+            }" href="#${data.recipe.id}">
               <figure class="preview__fig">
-                <img src="${data.image_url}" alt="Test" />
+                <img src="${data.recipe.image_url}" alt="Test" />
               </figure>
               <div class="preview__data">
-                <h4 class="preview__title">${data.title}</h4>
-                <p class="preview__publisher">${data.publisher}</p>
+                <h4 class="preview__title">${data.recipe.title}</h4>
+                <p class="preview__publisher">${data.recipe.publisher}</p>
                 <div class="preview__user-generated">
                   <svg>
                     <use href="${icons}#icon-user"></use>
@@ -60,4 +62,4 @@ class viewSearchResult extends View {
     return data.map((rc) => this.#generateHtml(rc, hashId)).join("");
   }
 }
-export default new viewSearchResult();
+export default new viewBookmark();

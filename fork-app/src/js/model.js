@@ -12,6 +12,7 @@ const state = {
     totalPage: 0,
     pagResult: [],
   },
+  bookmarks: [],
 };
 
 const loadRecipe = async function (id) {
@@ -22,6 +23,9 @@ const loadRecipe = async function (id) {
       timeout(TIME_OUT),
     ]);
     state.recipe = data;
+    state.recipe.bookmark = state.bookmarks.some(
+      (bookmark) => bookmark.recipe.id === id
+    );
   } catch (error) {
     throw error;
   }
@@ -34,6 +38,7 @@ const loadSearchResult = async function (query) {
       timeout(TIME_OUT),
     ]);
     state.search.query = query;
+    state.search.page = 1; //reset page to 1
     state.search.result = data.recipes;
     state.search.totalPage = Math.ceil(
       state.search.result.length / RES_PER_PAGE
@@ -58,10 +63,20 @@ const updateServings = function (newServings) {
   });
   state.recipe.recipe.servings = newServings;
 };
+const addBookmark = function () {
+  state.recipe.bookmark = state.recipe.bookmark ? false : true;
+  state.bookmarks = state.recipe.bookmark
+    ? [...state.bookmarks, state.recipe]
+    : state.bookmarks.filter(
+        (bookmark) => bookmark.recipe.id !== state.recipe.recipe.id
+      );
+};
+
 export {
   state,
   loadRecipe,
   loadSearchResult,
   getPaginationPage,
   updateServings,
+  addBookmark,
 };

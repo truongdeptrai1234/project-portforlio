@@ -24,10 +24,11 @@ class viewRecipes extends View {
     curDOM.forEach((cur, i) => {
       if (
         cur.firstChild?.nodeValue.trim() !==
-        newDOM[i].firstChild?.nodeValue.trim()
+          newDOM[i].firstChild?.nodeValue.trim() ||
+        cur.firstElementChild?.outerHTML !==
+          newDOM[i].firstElementChild?.outerHTML
       ) {
-        cur.textContent = newDOM[i].textContent;
-        cur.classList = newDOM[i].classList;
+        cur.innerHTML = newDOM[i].innerHTML;
       }
     });
   }
@@ -112,7 +113,9 @@ class viewRecipes extends View {
             </div>
             <button class="btn--round">
               <svg class="">
-                <use href="/icons.21bad73c.svg#icon-bookmark-fill"></use>
+                <use href="/icons.21bad73c.svg#icon-bookmark${
+                  data.bookmark ? "-fill" : ""
+                }"></use>
               </svg>
             </button>
           </div>

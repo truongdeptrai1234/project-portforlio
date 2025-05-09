@@ -38,7 +38,7 @@ export default class View {
                 <use href="${icons}#icon-smile"></use>
               </svg>
             </div>
-            <p>${message}</p>
+            <p>${this._successMessage}</p>
           </div>
       `;
     this._clear();
@@ -84,6 +84,11 @@ export default class View {
       ).textContent;
       if (e.target.closest(".btn--increase-servings")) handler(++serving);
       if (e.target.closest(".btn--decrease-servings")) handler(--serving);
+    });
+  }
+  addBookmarkHandler(handler) {
+    this._parentEle.addEventListener("click", function (e) {
+      if (e.target.closest(".btn--round")) handler();
     });
   }
 }
