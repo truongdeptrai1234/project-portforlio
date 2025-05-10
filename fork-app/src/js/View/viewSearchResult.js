@@ -2,39 +2,10 @@ import icons from "url:../../img/icons.svg";
 import View from "./view";
 class viewSearchResult extends View {
   //private field
-
   _parentEle = document.querySelector(".results");
   _errorMessage = "recipe list not found, please try again 🍟🍟";
   _successMessage = "";
   //method
-  updateDOM(data, hashId) {
-    const curDOM = Array.from(this._parentEle.querySelectorAll("*"));
-    //create a virtual DOM
-
-    const newDOM = Array.from(
-      document
-        .createRange()
-        .createContextualFragment(this.#renderListRecipe(data, hashId))
-        .querySelectorAll("*")
-    );
-    //compare two DOM
-    curDOM.forEach((cur, i) => {
-      if (
-        Array.from(cur.classList).at(-1) !==
-        Array.from(newDOM[i].classList).at(-1)
-      ) {
-        cur.classList.toggle("preview__link--active");
-      }
-    });
-  }
-  render(data, hashId = "") {
-    if (!data || data.length === 0) return this.renderError();
-    this._data = data;
-    this._clear();
-    const mark = this.#renderListRecipe(this._data, hashId);
-    this._parentEle.insertAdjacentHTML("afterbegin", mark);
-  }
-
   #generateHtml(data = "", hashId) {
     return `<li class="preview">
             <a class="preview__link ${
@@ -55,8 +26,7 @@ class viewSearchResult extends View {
             </a>
     </li>`;
   }
-
-  #renderListRecipe(data = "", hashId) {
+  _renderListRecipe(data = "", hashId) {
     return data.map((rc) => this.#generateHtml(rc, hashId)).join("");
   }
 }

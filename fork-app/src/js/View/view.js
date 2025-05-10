@@ -5,7 +5,34 @@ export default class View {
   //public field
 
   //method
+  updatePreviewDOM(data, hashId) {
+    const curDOM = Array.from(this._parentEle.querySelectorAll("*"));
+    //create a virtual DOM
 
+    const newDOM = Array.from(
+      document
+        .createRange()
+        .createContextualFragment(this._renderListRecipe(data, hashId))
+        .querySelectorAll("*")
+    );
+    //compare two DOM
+    curDOM.forEach((cur, i) => {
+      if (
+        Array.from(cur.classList).at(-1) !==
+        Array.from(newDOM[i].classList).at(-1)
+      ) {
+        cur.classList.toggle("preview__link--active");
+      }
+    });
+  }
+  render(data, hashId = "", isBookmark = false) {
+    if (!data || data.length === 0)
+      return isBookmark ? this.renderMessage() : this.renderError();
+    this._data = data;
+    this._clear();
+    const mark = this._renderListRecipe(this._data, hashId);
+    this._parentEle.insertAdjacentHTML("afterbegin", mark);
+  }
   loadingSpinner() {
     const mark = `
         <div class="spinner">
@@ -30,7 +57,7 @@ export default class View {
     this._clear();
     this._parentEle.insertAdjacentHTML("afterbegin", mark);
   }
-  renderMessage(message = this._successMessage) {
+  renderMessage() {
     const mark = `
           <div class="message">
             <div>

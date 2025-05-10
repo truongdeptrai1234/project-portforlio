@@ -11,9 +11,9 @@ import viewBookmark from "./View/viewBookmark.js";
 const loadRecipeController = async function () {
   try {
     const id = window.location.hash.slice(1);
-    viewSearchResult.updateDOM(model.state.search.pagResult, id);
+    viewSearchResult.updatePreviewDOM(model.state.search.pagResult, id);
     model.state.bookmarks.length > 0 &&
-      viewBookmark.updateDOM(model.state.bookmarks, id);
+      viewBookmark.updatePreviewDOM(model.state.bookmarks, id);
     viewRecipes.loadingSpinner();
     await model.loadRecipe(id);
     viewRecipes.render(model.state.recipe);
@@ -52,10 +52,13 @@ const updateServingsController = function (newServings) {
   viewRecipes.updateDOM(model.state.recipe); //not re-render the whole DOM
 };
 const addBookmarkController = function () {
-  console.log("recipe check bookmark");
   model.addBookmark();
   viewRecipes.updateDOM(model.state.recipe);
-  viewBookmark.render(model.state.bookmarks);
+  viewBookmark.render(
+    model.state.bookmarks,
+    model.state.recipe.recipe.id,
+    true
+  );
 };
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
