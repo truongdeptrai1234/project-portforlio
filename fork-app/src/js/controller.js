@@ -51,8 +51,9 @@ const updateServingsController = function (newServings) {
   model.updateServings(newServings);
   viewRecipes.updateDOM(model.state.recipe); //not re-render the whole DOM
 };
-const addBookmarkController = function () {
+const bookmarkController = function () {
   model.addBookmark();
+  model.setBookmarkStorage();
   viewRecipes.updateDOM(model.state.recipe);
   viewBookmark.render(
     model.state.bookmarks,
@@ -60,12 +61,16 @@ const addBookmarkController = function () {
     true
   );
 };
+const initBookmarkController = function () {
+  viewBookmark.render(model.state.bookmarks, "", true);
+};
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
   viewRecipes.addUpdateServingsHandler(updateServingsController);
-  viewRecipes.addBookmarkHandler(addBookmarkController);
+  viewRecipes.addBookmarkHandler(bookmarkController);
   viewSearch.addLoadSearchHandler(searchController, paginationController);
   viewPagResult.addButtonPagHandler(pageUpdateController);
+  viewBookmark.addLoadBookmarkHandler(initBookmarkController);
 };
 init();
 

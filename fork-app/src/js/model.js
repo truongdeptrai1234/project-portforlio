@@ -48,14 +48,10 @@ const loadSearchResult = async function (query) {
   }
 };
 const getPaginationPage = function (page) {
-  try {
-    return (state.search.pagResult = state.search.result.slice(
-      (page - 1) * RES_PER_PAGE,
-      page * RES_PER_PAGE
-    ));
-  } catch (error) {
-    console.log(error);
-  }
+  return (state.search.pagResult = state.search.result.slice(
+    (page - 1) * RES_PER_PAGE,
+    page * RES_PER_PAGE
+  ));
 };
 const updateServings = function (newServings) {
   state.recipe.recipe.ingredients.forEach((ing) => {
@@ -71,7 +67,22 @@ const addBookmark = function () {
         (bookmark) => bookmark.recipe.id !== state.recipe.recipe.id
       );
 };
+const storageBookmarks = function () {
+  const bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
+  if (!bookmarks || bookmarks.length === 0) return;
 
+  state.bookmarks = bookmarks;
+};
+const setBookmarkStorage = function () {
+  localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+const clearBookmarkStorage = function () {
+  localStorage.removeItem("bookmarks");
+};
+const init = function () {
+  storageBookmarks();
+};
+init();
 export {
   state,
   loadRecipe,
@@ -79,4 +90,6 @@ export {
   getPaginationPage,
   updateServings,
   addBookmark,
+  storageBookmarks,
+  setBookmarkStorage,
 };

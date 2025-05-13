@@ -118,4 +118,7 @@ export default class View {
       if (e.target.closest(".btn--round")) handler();
     });
   }
+  addLoadBookmarkHandler(handler) {
+    window.addEventListener("load", handler);
+  }
 }
