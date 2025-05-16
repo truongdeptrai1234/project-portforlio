@@ -1,7 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { API_URL, TIME_OUT, RES_PER_PAGE, KEY } from "./config";
-import { getJSON, sendJSON, inputFormValidate, timeout } from "./View/helper";
+import { AJAX, inputFormValidate, timeout } from "./View/helper";
 import Fraction from "fraction.js";
 
 const state = {
@@ -20,7 +20,7 @@ const loadRecipe = async function (id) {
   try {
     if (!id) return;
     const data = await Promise.race([
-      getJSON(`${API_URL}/${id}`),
+      AJAX(`${API_URL}/${id}?key=${KEY}`),
       timeout(TIME_OUT),
     ]);
     state.recipe = data;
@@ -35,7 +35,7 @@ const loadSearchResult = async function (query) {
   try {
     if (!query) return;
     const data = await Promise.race([
-      getJSON(`${API_URL}?search=${query}`),
+      AJAX(`${API_URL}?search=${query}&key=${KEY}`),
       timeout(TIME_OUT),
     ]);
     state.search.query = query;
@@ -82,13 +82,14 @@ const uploadRecipeData = async function (newRecipe) {
   try {
     console.log(state.recipe);
     console.log(newRecipe);
-    const regexpIng = new RegExp(/\d|\d[\W]\d,[a-z]/i);
+    const regexpIng = new RegExp(/(^\d+$)|\d[\W]\d,[a-z]/i);
     const ingredients = newRecipe
       .filter(([field]) => field.startsWith("ingredient"))
       .map(([, value]) => (value.match(regexpIng) ? value.split(",") : []))
       .map((value) => {
         const [quantity, unit, description] = value;
         if (!description) return null;
+        console.log(quantity);
         return {
           quantity: quantity ? new Fraction(quantity).valueOf() : null,
           unit: unit ? unit.trim() : "",
@@ -121,9 +122,9 @@ const uploadRecipeData = async function (newRecipe) {
           "Please fill all the recipe data 's fields or check the format"
         );
     });
-    const { data } = await sendJSON(`${API_URL}?key=${KEY}`, uploadRecipe);
+    const { data } = await AJAX(`${API_URL}?key=${KEY}`, uploadRecipe);
     state.recipe = data;
-    //addBookmark();
+    addBookmark();
     //console.log(data);
   } catch (error) {
     throw error;

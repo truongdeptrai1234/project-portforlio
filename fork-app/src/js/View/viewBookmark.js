@@ -19,7 +19,9 @@ class viewBookmark extends View {
               <div class="preview__data">
                 <h4 class="preview__title">${data.recipe.title}</h4>
                 <p class="preview__publisher">${data.recipe.publisher}</p>
-                <div class="preview__user-generated">
+                <div class="preview__user-generated ${
+                  data.recipe.key ? "" : "hidden"
+                }">
                   <svg>
                     <use href="${icons}#icon-user"></use>
                   </svg>

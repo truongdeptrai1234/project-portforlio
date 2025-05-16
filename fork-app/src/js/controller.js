@@ -14,6 +14,7 @@ import { MODAL_CLOSE_SEC } from "./config.js";
 const loadRecipeController = async function () {
   try {
     const id = window.location.hash.slice(1);
+    if (!id) return;
     model.state.search.result.length > 0 &&
       viewSearchResult.updatePreviewDOM(model.state.search.pagResult, id);
     model.state.bookmarks.length > 0 &&
@@ -74,6 +75,12 @@ const addRecipeController = async function (newRecipe) {
       viewAddRecipe._toggleModal();
       viewRecipes.render(model.state.recipe);
     }, MODAL_CLOSE_SEC * 1000);
+    model.setBookmarkStorage();
+    viewBookmark.render(
+      model.state.bookmarks,
+      model.state.recipe.recipe.id,
+      true
+    );
   } catch (error) {
     console.log(error);
     viewAddRecipe.renderError(error.message); //modal error;
@@ -84,6 +91,7 @@ const initBookmarkController = function () {
 };
 
 const init = function () {
+  window.location.hash = ""; //reset url when refresh , only for dev
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
   viewRecipes.addUpdateServingsHandler(updateServingsController);
   viewRecipes.addBookmarkHandler(bookmarkController);
