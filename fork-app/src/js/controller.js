@@ -7,11 +7,15 @@ import viewSearch from "./View/viewSearch.js";
 import viewSearchResult from "./View/viewSearchResult.js";
 import viewPagResult from "./View/viewPagResult.js";
 import viewBookmark from "./View/viewBookmark.js";
+import viewAddRecipe from "./View/viewAddRecipe.js";
+
+import { MODAL_CLOSE_SEC } from "./config.js";
 
 const loadRecipeController = async function () {
   try {
     const id = window.location.hash.slice(1);
-    viewSearchResult.updatePreviewDOM(model.state.search.pagResult, id);
+    model.state.search.result.length > 0 &&
+      viewSearchResult.updatePreviewDOM(model.state.search.pagResult, id);
     model.state.bookmarks.length > 0 &&
       viewBookmark.updatePreviewDOM(model.state.bookmarks, id);
     viewRecipes.loadingSpinner();
@@ -61,9 +65,24 @@ const bookmarkController = function () {
     true
   );
 };
+const addRecipeController = async function (newRecipe) {
+  try {
+    viewAddRecipe.loadingSpinner();
+    await model.uploadRecipeData(newRecipe);
+    viewAddRecipe.renderMessage();
+    setTimeout(() => {
+      viewAddRecipe._toggleModal();
+      viewRecipes.render(model.state.recipe);
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.log(error);
+    viewAddRecipe.renderError(error.message); //modal error;
+  }
+};
 const initBookmarkController = function () {
   viewBookmark.render(model.state.bookmarks, "", true);
 };
+
 const init = function () {
   viewRecipes.addLoadRecipeHandler(loadRecipeController);
   viewRecipes.addUpdateServingsHandler(updateServingsController);
@@ -71,6 +90,7 @@ const init = function () {
   viewSearch.addLoadSearchHandler(searchController, paginationController);
   viewPagResult.addButtonPagHandler(pageUpdateController);
   viewBookmark.addLoadBookmarkHandler(initBookmarkController);
+  viewAddRecipe.addNewRecipeHandler(addRecipeController);
 };
 init();
 

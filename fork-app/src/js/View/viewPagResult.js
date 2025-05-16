@@ -18,6 +18,7 @@ class ViewPagResult extends View {
   }
 
   #checkPagination(data) {
+    if (data.totalPage === 1) return "";
     if (data.page === 1) return this._buttonNextMarkupHtml(data);
     if (data.page > 1 && data.page < data.totalPage)
       return (

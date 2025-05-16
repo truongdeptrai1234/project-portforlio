@@ -44,7 +44,7 @@ export default class View {
     this._clear();
     this._parentEle.insertAdjacentHTML("afterbegin", mark);
   }
-  renderError() {
+  renderError(message = this._errorMessage) {
     const mark = `
       <div class="error">
         <div>
@@ -52,7 +52,7 @@ export default class View {
             <use href="${icons}#icon-alert-triangle"></use>
           </svg>
         </div>
-        <p>${this._errorMessage}</p>
+        <p>${message}</p>
       </div>`;
     this._clear();
     this._parentEle.insertAdjacentHTML("afterbegin", mark);
@@ -77,6 +77,7 @@ export default class View {
   _clearInput() {
     this._parentEle.querySelector(".search__field").value = "";
   }
+
   addLoadRecipeHandler(handler) {
     window.addEventListener("hashchange", handler);
   }
@@ -120,5 +121,12 @@ export default class View {
   }
   addLoadBookmarkHandler(handler) {
     window.addEventListener("load", handler);
+  }
+  addNewRecipeHandler(handler) {
+    this._parentEle.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = [...new FormData(this)]; //colect data from form
+      handler(data);
+    });
   }
 }

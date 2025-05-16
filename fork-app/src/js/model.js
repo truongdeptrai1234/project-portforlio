@@ -1,7 +1,8 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import { API_URL, TIME_OUT, RES_PER_PAGE } from "./config";
-import { getJSON, timeout } from "./View/helper";
+import { API_URL, TIME_OUT, RES_PER_PAGE, KEY } from "./config";
+import { getJSON, sendJSON, inputFormValidate, timeout } from "./View/helper";
+import Fraction from "fraction.js";
 
 const state = {
   recipe: {},
@@ -55,6 +56,7 @@ const getPaginationPage = function (page) {
 };
 const updateServings = function (newServings) {
   state.recipe.recipe.ingredients.forEach((ing) => {
+    if (!ing) return;
     ing.quantity = (ing.quantity * newServings) / state.recipe.recipe.servings;
   });
   state.recipe.recipe.servings = newServings;
@@ -76,9 +78,62 @@ const storageBookmarks = function () {
 const setBookmarkStorage = function () {
   localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
 };
-const clearBookmarkStorage = function () {
-  localStorage.removeItem("bookmarks");
+const uploadRecipeData = async function (newRecipe) {
+  try {
+    console.log(state.recipe);
+    console.log(newRecipe);
+    const regexpIng = new RegExp(/\d|\d[\W]\d,[a-z]/i);
+    const ingredients = newRecipe
+      .filter(([field]) => field.startsWith("ingredient"))
+      .map(([, value]) => (value.match(regexpIng) ? value.split(",") : []))
+      .map((value) => {
+        const [quantity, unit, description] = value;
+        if (!description) return null;
+        return {
+          quantity: quantity ? new Fraction(quantity).valueOf() : null,
+          unit: unit ? unit.trim() : "",
+          description: description.trim(),
+        };
+      });
+    console.log(ingredients);
+    const recipe = Object.fromEntries(newRecipe);
+    const uploadRecipe = {
+      title: inputFormValidate(recipe.title, "text") ? recipe.title : null,
+      publisher: inputFormValidate(recipe.publisher, "text")
+        ? recipe.publisher
+        : null,
+      source_url: inputFormValidate(recipe.sourceUrl, "url")
+        ? recipe.sourceUrl
+        : null,
+      image_url: inputFormValidate(recipe.image, "url") ? recipe.image : null,
+      servings: inputFormValidate(recipe.servings, "number")
+        ? +recipe.servings
+        : 1,
+      cooking_time: inputFormValidate(recipe.cookingTime, "number")
+        ? +recipe.cookingTime
+        : 1,
+      ingredients,
+    };
+    Object.values(uploadRecipe).forEach((value) => {
+      console.log(value);
+      if (!value || value.length === 0)
+        throw new Error(
+          "Please fill all the recipe data 's fields or check the format"
+        );
+    });
+    const { data } = await sendJSON(`${API_URL}?key=${KEY}`, uploadRecipe);
+    state.recipe = data;
+    //addBookmark();
+    //console.log(data);
+  } catch (error) {
+    throw error;
+  }
 };
+//developer only
+// const clearBookmarkStorage = function () {
+//   localStorage.removeItem("bookmarks");
+// };
+// clearBookmarkStorage();
 const init = function () {
   storageBookmarks();
 };
@@ -92,4 +147,5 @@ export {
   addBookmark,
   storageBookmarks,
   setBookmarkStorage,
+  uploadRecipeData,
 };

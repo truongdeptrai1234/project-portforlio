@@ -44,11 +44,12 @@ class viewRecipes extends View {
 
   #generateHtmlIng(data) {
     return data.recipe.ingredients
-      .map(
-        (ing) => `
+      .map((ing) =>
+        ing
+          ? `
         <li class="recipe__ingredient">
           <svg class="recipe__icon">
-            <use href="/icons.21bad73c.svg#icon-check"></use>
+            <use href="${icons}#icon-check"></use>
           </svg>
           <div class="recipe__quantity">${
             ing.quantity ? new Fraction(ing.quantity).toFraction() : ""
@@ -58,6 +59,7 @@ class viewRecipes extends View {
             ${ing.description ?? ""}
           </div>
         </li>`
+          : ""
       )
       .join("");
   }
@@ -75,7 +77,7 @@ class viewRecipes extends View {
           <div class="recipe__details">
             <div class="recipe__info">
               <svg class="recipe__info-icon">
-                <use href="/icons.21bad73c.svg#icon-clock"></use>
+                <use href="${icons}#icon-clock"></use>
               </svg>
               <span class="recipe__info-data recipe__info-data--minutes">${
                 data.recipe.cooking_time
@@ -84,7 +86,7 @@ class viewRecipes extends View {
             </div>
             <div class="recipe__info">
               <svg class="recipe__info-icon">
-                <use href="/icons.21bad73c.svg#icon-users"></use>
+                <use href="${icons}#icon-users"></use>
               </svg>
               <span class="recipe__info-data recipe__info-data--people">${
                 data.recipe.servings
@@ -94,12 +96,12 @@ class viewRecipes extends View {
               <div class="recipe__info-buttons">
                 <button class="btn--tiny btn--decrease-servings">
                   <svg>
-                    <use href="/icons.21bad73c.svg#icon-minus-circle"></use>
+                    <use href="${icons}#icon-minus-circle"></use>
                   </svg>
                 </button>
                 <button class="btn--tiny btn--increase-servings">
                   <svg>
-                    <use href="/icons.21bad73c.svg#icon-plus-circle"></use>
+                    <use href="${icons}#icon-plus-circle"></use>
                   </svg>
                 </button>
               </div>
@@ -108,14 +110,14 @@ class viewRecipes extends View {
   
             <div class="recipe__user-generated">
               <svg>
-                <use href="/icons.21bad73c.svg#icon-user"></use>
+                <use href="${icons}#icon-user"></use>
               </svg>
             </div>
             <button class="btn--round">
               <svg class="">
-                <use href="/icons.21bad73c.svg#icon-bookmark${
-                  data.bookmark ? "-fill" : ""
-                }"></use>
+                <use href="${icons}#icon-bookmark${
+      data.bookmark ? "-fill" : ""
+    }"></use>
               </svg>
             </button>
           </div>
@@ -132,17 +134,20 @@ class viewRecipes extends View {
             <h2 class="heading--2">How to cook it</h2>
             <p class="recipe__directions-text">
               This recipe was carefully designed and tested by
-              <span class="recipe__publisher">The Pioneer Woman</span>. Please check out
+              <span class="recipe__publisher">${
+                data.recipe.publisher
+              }</span>. Please check out
               directions at their website.
             </p>
             <a
               class="btn--small recipe__btn"
-              href="http://thepioneerwoman.com/cooking/pasta-with-tomato-cream-sauce/"
+              href="${data.recipe.source_url}"
+              rel="noopener noreferrer"
               target="_blank"
             >
               <span>Directions</span>
               <svg class="search__icon">
-                <use href="/icons.21bad73c.svg#icon-arrow-right"></use>
+                <use href="${icons}#icon-arrow-right"></use>
               </svg>
             </a>
           </div>`;

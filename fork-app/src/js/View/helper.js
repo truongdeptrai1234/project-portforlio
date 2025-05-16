@@ -18,3 +18,32 @@ export const timeout = function (s) {
     }, s * 1000);
   });
 };
+export const sendJSON = async function (url, uploadRecipe) {
+  try {
+    const sendPro = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(uploadRecipe),
+    });
+    if (!sendPro.ok) throw new Error(`error sendjson:${sendPro.status} `);
+    const data = await sendPro.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+export const inputFormValidate = function (input, type) {
+  switch (type) {
+    case "text":
+      return input.trim() !== "";
+    case "number":
+      return !isNaN(input) && input > 0;
+    case "url":
+      return /^https?:\/\/.+\..+/.test(input);
+    default:
+      return false;
+  }
+};
