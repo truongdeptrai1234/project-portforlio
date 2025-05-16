@@ -9,3 +9,5 @@
 npx npm-check-updates -u
 
 npm install
+
+live host github: https://truongdeptrai1234.github.io/project-portforlio/
