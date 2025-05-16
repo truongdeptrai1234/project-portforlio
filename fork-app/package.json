@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"No tests implemented yet\"",
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir ./dist",
+    "build": "parcel build index.html --public-url /project-portforlio/",
     "deploy": "gh-pages -d dist"
   },
   "author": "mr.truong",
