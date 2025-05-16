@@ -116,7 +116,6 @@ const uploadRecipeData = async function (newRecipe) {
       ingredients,
     };
     Object.values(uploadRecipe).forEach((value) => {
-      console.log(value);
       if (!value || value.length === 0)
         throw new Error(
           "Please fill all the recipe data 's fields or check the format"
@@ -125,16 +124,10 @@ const uploadRecipeData = async function (newRecipe) {
     const { data } = await AJAX(`${API_URL}?key=${KEY}`, uploadRecipe);
     state.recipe = data;
     addBookmark();
-    //console.log(data);
   } catch (error) {
     throw error;
   }
 };
-//developer only
-// const clearBookmarkStorage = function () {
-//   localStorage.removeItem("bookmarks");
-// };
-// clearBookmarkStorage();
 const init = function () {
   storageBookmarks();
 };

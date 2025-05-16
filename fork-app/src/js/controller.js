@@ -23,7 +23,6 @@ const loadRecipeController = async function () {
     await model.loadRecipe(id);
     viewRecipes.render(model.state.recipe);
   } catch (error) {
-    console.log(error.message);
     viewRecipes.renderError();
   }
 };
@@ -34,18 +33,13 @@ const searchController = async function () {
     if (!query) return;
     await model.loadSearchResult(query);
   } catch (error) {
-    console.log(error);
     viewSearchResult.renderError();
   }
 };
 const paginationController = async function () {
-  try {
-    const page = model.state.search.page;
-    viewSearchResult.render(model.getPaginationPage(page));
-    viewPagResult.render(model.state.search);
-  } catch (error) {
-    console.log(error);
-  }
+  const page = model.state.search.page;
+  viewSearchResult.render(model.getPaginationPage(page));
+  viewPagResult.render(model.state.search);
 };
 const pageUpdateController = async function (btnType) {
   btnType === "next" ? model.state.search.page++ : model.state.search.page--;
@@ -82,7 +76,6 @@ const addRecipeController = async function (newRecipe) {
       true
     );
   } catch (error) {
-    console.log(error);
     viewAddRecipe.renderError(error.message); //modal error;
   }
 };
