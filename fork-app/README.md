@@ -1,6 +1,6 @@
-"#project"
+Project manage food recipe app
 
-#Install
+#Install:
 
 ##clone my repo : https://github.com/truongdeptrai1234/project-portforlio.git
 
