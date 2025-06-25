@@ -80,8 +80,6 @@ const setBookmarkStorage = function () {
 };
 const uploadRecipeData = async function (newRecipe) {
   try {
-    console.log(state.recipe);
-    console.log(newRecipe);
     const regexpIng = new RegExp(/(^\d+$)|\d[\W]\d,[a-z]/i);
     const ingredients = newRecipe
       .filter(([field]) => field.startsWith("ingredient"))
@@ -89,14 +87,13 @@ const uploadRecipeData = async function (newRecipe) {
       .map((value) => {
         const [quantity, unit, description] = value;
         if (!description) return null;
-        console.log(quantity);
         return {
           quantity: quantity ? new Fraction(quantity).valueOf() : null,
           unit: unit ? unit.trim() : "",
           description: description.trim(),
         };
       });
-    console.log(ingredients);
+
     const recipe = Object.fromEntries(newRecipe);
     const uploadRecipe = {
       title: inputFormValidate(recipe.title, "text") ? recipe.title : null,

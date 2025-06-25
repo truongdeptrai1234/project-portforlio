@@ -43,6 +43,7 @@ class viewAddRecipe extends View {
       this._overlay.classList.toggle("hidden");
     });
   }
+
   #generateHtml() {
     return `
         <div class="upload__column">
