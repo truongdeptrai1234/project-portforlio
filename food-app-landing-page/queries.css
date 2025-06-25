@@ -1,0 +1,341 @@
+/* 1 rem = 1em  */
+/* media query dont work with html font size  */
+
+/* 1rem = 1em =16px  */
+/* DEVICE WITH OVER 1600 PIXEL */
+@media(min-width:100em) {
+
+    .hero-container,
+    .container,
+    .footer-content {
+        max-width: 140rem;
+    }
+
+}
+
+@media(max-width:100em) {
+    .mobile-nav {
+        display: none;
+    }
+}
+
+/* SOME BIG SCREEN LAPTOP  */
+@media(max-width:84em) {
+    .main-header {
+        font-size: 4.4rem;
+    }
+
+    .customer {
+        width: 50%;
+    }
+
+}
+
+/* NOMAL LAPTOP 1200 */
+@media(max-width:75em) {
+    html {
+        font-size: 56.25%
+    }
+
+    .customer {
+        width: 50%;
+    }
+
+    .header {
+        padding: 0 2.4rem;
+    }
+
+    .main-nav-list {
+        gap: 0.8rem;
+    }
+
+    .hero-container {
+        column-gap: 3.2rem;
+    }
+
+    .main-header {
+        font-size: 4.0rem;
+    }
+}
+
+/* landscape tablet 1024 */
+@media (max-width:64em) {
+    .cta-background {
+        height: 90vh;
+    }
+
+    .footer-content {
+        max-width: 100rem;
+        gap: 1.2rem;
+    }
+
+    .logo-feature img {
+        width: 15%;
+        height: 100%;
+    }
+
+    .delivery-meals {
+        gap: 0;
+    }
+}
+
+/* tablet below 960  */
+@media(max-width:60em) {
+    html {
+        font-size: 50%;
+    }
+
+    .hero-container {
+        text-align: center;
+        flex-direction: column;
+        gap: 3.2rem;
+        padding: 0 8.0rem;
+    }
+
+    .hero-img {
+        display: inline-block;
+        width: 60%;
+    }
+
+    .customer {
+        width: 32%;
+    }
+
+    .delivery-meals {
+        gap: 0;
+        justify-content: center;
+        margin: 3.2rem 0 2.4rem;
+    }
+
+    .meal-info-box {
+        padding: 3.2rem 2.4rem 0;
+    }
+
+    .footer-content {
+        max-width: 90rem;
+
+    }
+
+    footer .logo-brand {
+        width: 70%;
+    }
+
+    .galery-box {
+        grid-template-columns: repeat(6, 1fr);
+        padding-left: 0;
+    }
+
+    .testi-grid-content {
+
+        grid-template-columns: 1fr;
+        gap: 2.4rem;
+    }
+
+    .testimonial-item-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+    .cta-background {
+        height: 80vh;
+    }
+
+    .header .logo-brand {
+        width: 16%;
+    }
+}
+
+@media(max-width:46.875em) {
+
+    html {
+        font-size: 47.85%
+    }
+
+    .main-title-heading {
+        font-size: 3.0rem;
+    }
+
+    .main-nav {
+        z-index: -1;
+    }
+
+    .sub-title-heading {
+        font-size: 1.4rem;
+    }
+
+    .form {
+        width: 85%;
+    }
+
+    .mobile-nav {
+        display: block;
+    }
+
+    .main-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32%;
+        height: 70vh;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #fff;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.4s ease-in;
+    }
+
+    .main-nav-list {
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: flex-start;
+        justify-items: flex-end;
+    }
+
+    .main-nav.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateX(0%);
+        opacity: 1;
+        z-index: 0;
+    }
+
+    .btn-close.active {
+        display: block;
+    }
+
+    .header .logo-brand {
+        width: 24%;
+    }
+
+    .feature-box {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* smaller tablet around 640  */
+@media(max-width:40em) {
+    .form {
+        width: 100%;
+    }
+
+    .customer {
+        width: 45%;
+    }
+
+    .list-meal-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .diet-list {
+        grid-column: span 2;
+        justify-self: center;
+    }
+
+    .meal-info-box {
+        padding: 2.8rem 3.2rem;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(6, 1fr);
+        row-gap: 3.8rem;
+    }
+
+    .brand,
+    .contact-list {
+        grid-column: span 3;
+        justify-self: center;
+    }
+
+    .product,
+    .company,
+    .resource {
+        grid-column: span 2;
+    }
+}
+
+/* Phone below 550px  */
+@media(max-width:34.375em) {
+
+    .grid.grid--2-col {
+        grid-template-columns: 1fr;
+    }
+
+    .list-meal-box.grid--3-col {
+        grid-template-columns: 1fr;
+    }
+
+    .diet-list {
+        grid-column: span 1;
+    }
+
+    .hero {
+        padding: 3.2rem 0 6.4rem
+    }
+
+    .hero-container {
+        padding: 0 2.8rem;
+    }
+
+    .mobile-res {
+        justify-content: center;
+        display: flex;
+    }
+
+    .mobile-res a:link,
+    .mobile-res a:active {
+        padding: 1.2rem 1.6rem;
+        border-radius: 0.8rem;
+    }
+
+    .eatwell-link {
+        margin-right: 0;
+    }
+
+    .header .logo-brand {
+        width: 30%;
+    }
+
+    .customer {
+        width: 70%;
+    }
+
+    .customer img {
+        width: 3.8rem;
+        height: 3.8rem;
+    }
+
+    .cta-background {
+        height: 110vh
+    }
+
+    .how-it-work {
+        padding-top: 3.2rem;
+    }
+
+    .testimonial-item-container {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .galery-box.grid--3-col {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .plan-box {
+        width: 70%;
+        justify-self: center;
+    }
+
+    .grid.grid--4-col {
+        grid-template-columns: 1fr;
+    }
+
+    .form {
+        width: 85%;
+    }
+}
