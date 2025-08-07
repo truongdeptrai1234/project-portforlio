@@ -2,7 +2,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { API_URL, TIME_OUT, RES_PER_PAGE, KEY } from "./config";
 import { AJAX, inputFormValidate, timeout } from "./View/helper";
-import Fraction from "fraction.js";
+import { fracty } from "fracty";
 
 const state = {
   recipe: {},
@@ -88,7 +88,7 @@ const uploadRecipeData = async function (newRecipe) {
         const [quantity, unit, description] = value;
         if (!description) return null;
         return {
-          quantity: quantity ? new Fraction(quantity).valueOf() : null,
+          quantity: quantity ? fracty(quantity).valueOf() : null,
           unit: unit ? unit.trim() : "",
           description: description.trim(),
         };
