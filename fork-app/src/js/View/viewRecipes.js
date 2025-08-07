@@ -1,7 +1,7 @@
 import icons from "url:../../img/icons.svg";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import Fraction from "fraction.js";
+import fracty from "fracty";
 import View from "./view";
 class viewRecipes extends View {
   //public field
@@ -52,7 +52,7 @@ class viewRecipes extends View {
             <use href="${icons}#icon-check"></use>
           </svg>
           <div class="recipe__quantity">${
-            ing.quantity ? new Fraction(ing.quantity).toFraction() : ""
+            ing.quantity ? fracty(ing.quantity) : ""
           }</div>
           <div class="recipe__description">
             <span class="recipe__unit">${ing.unit ?? ""}</span>

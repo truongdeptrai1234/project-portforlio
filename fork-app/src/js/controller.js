@@ -23,6 +23,7 @@ const loadRecipeController = async function () {
     await model.loadRecipe(id);
     viewRecipes.render(model.state.recipe);
   } catch (error) {
+    console.log(error);
     viewRecipes.renderError();
   }
 };

@@ -23,6 +23,7 @@ const loadRecipe = async function (id) {
       AJAX(`${API_URL}/${id}?key=${KEY}`),
       timeout(TIME_OUT),
     ]);
+    console.log(data);
     state.recipe = data;
     state.recipe.bookmark = state.bookmarks.some(
       (bookmark) => bookmark.recipe.id === id
@@ -38,6 +39,7 @@ const loadSearchResult = async function (query) {
       AJAX(`${API_URL}?search=${query}&key=${KEY}`),
       timeout(TIME_OUT),
     ]);
+
     state.search.query = query;
     state.search.page = 1; //reset page to 1
     state.search.result = data.recipes;
