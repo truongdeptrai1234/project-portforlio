@@ -11,3 +11,4 @@ npx npm-check-updates -u
 npm install
 
 live host github: https://truongdeptrai1234.github.io/project-portforlio/
+line host Netlify(alternative) : https://my-forkv2.netlify.app/#664c8f193e7aa067e94e8347
