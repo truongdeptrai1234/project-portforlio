@@ -1,0 +1,52 @@
+{
+  "cities": [
+    {
+      "cityName": "Berlin",
+      "country": "Germany",
+      "emoji": "DE",
+      "date": "2027-02-12T09:24:11.863Z",
+      "notes": "Amazing 😃",
+      "position": {
+        "lat": 52.53586782505711,
+        "lng": 13.376933665713324
+      },
+      "id": "98443197"
+    },
+    {
+      "id": "051d",
+      "cityName": "Castello de la Plana",
+      "country": "Spain",
+      "emoji": "ES",
+      "date": "2025-10-13T13:30:47.203Z",
+      "notes": "",
+      "position": {
+        "lat": 39.98645910523748,
+        "lng": -0.015638195292990712
+      }
+    },
+    {
+      "id": "0762",
+      "cityName": "Knic",
+      "country": "Serbia",
+      "emoji": "RS",
+      "date": "2025-10-14T17:33:52.507Z",
+      "notes": "",
+      "position": {
+        "lat": 43.89789239125797,
+        "lng": 20.830078125000004
+      }
+    },
+    {
+      "id": "b6fb",
+      "cityName": "Ho Chi Minh City",
+      "country": "Viet Nam",
+      "emoji": "VN",
+      "date": "2025-10-17T11:04:49.912Z",
+      "notes": "",
+      "position": {
+        "lat": 10.758449,
+        "lng": 106.6645122
+      }
+    }
+  ]
+}
