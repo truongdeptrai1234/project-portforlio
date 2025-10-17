@@ -10,3 +10,5 @@ External lib : json-server(fake API) , flag-icons , leaf-let
 Clone repo to local -> npm i
 
 ## Live host
+
+netlify: https://world-wise-pes.netlify.app/
