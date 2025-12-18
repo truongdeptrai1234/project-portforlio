@@ -12,6 +12,10 @@ export async function getSettings() {
 
 // We expect a newSetting object that looks like {setting: newValue}
 export async function updateSetting(newSetting) {
+  const settingsValue = Object.values(newSetting)[0];
+  const isInvalidSettings = !settingsValue || settingsValue < 0;
+  if (isInvalidSettings) throw new Error("Fields is invalid or empty");
+
   const { data, error } = await supabase
     .from("settings")
     .update(newSetting)
