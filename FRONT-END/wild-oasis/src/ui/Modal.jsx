@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { createPortal } from "react-dom";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,3 +49,14 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+export function Modal({ children, onClose }) {
+  return createPortal(
+    <Overlay>
+      <StyledModal>
+        <Button onClick={onClose}>&times;</Button>
+        {children}
+      </StyledModal>
+    </Overlay>,
+    document.body
+  );
+}

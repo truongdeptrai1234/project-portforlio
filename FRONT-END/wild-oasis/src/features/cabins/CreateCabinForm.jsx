@@ -36,7 +36,7 @@ function CreateCabinForm({ editOption, editItemData = {} }) {
     console.log(errors);
   }
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type="modal">
       <FormRow label="Cabin name" errors={errors?.name?.message}>
         <Input
           type="text"
@@ -105,7 +105,7 @@ function CreateCabinForm({ editOption, editItemData = {} }) {
           type="file"
           accept="image/*"
           {...register("image", {
-            required: editItemData ? false : "This field is required",
+            required: editOption ? false : "This field is required",
           })}
           disabled={isWorking}
         />
