@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 
-function CreateCabinForm({ editOption, editItemData = {} }) {
+function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: editItemData.id
       ? {
@@ -36,7 +36,10 @@ function CreateCabinForm({ editOption, editItemData = {} }) {
     console.log(errors);
   }
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} type="modal">
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={`${onClose ? "modal" : "regular"}`}
+    >
       <FormRow label="Cabin name" errors={errors?.name?.message}>
         <Input
           type="text"
