@@ -6,6 +6,9 @@ import { useDeleteCabin } from "./useDeleteCabin";
 import { HiDocumentDuplicate, HiTrash } from "react-icons/hi2";
 import { MdEdit } from "react-icons/md";
 import { useCreateCabin } from "./useCreateCabin";
+import Modal from "../../ui/Modal";
+import Button from "../../ui/Button";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const TableRow = styled.div`
   display: grid;
@@ -50,7 +53,7 @@ function CabinRow({ item }) {
   const { id, image, name, regularPrice, discount, maxCapacity, description } =
     item;
 
-  const { deleteCabinHandler } = useDeleteCabin();
+  const { deleteCabinHandler, isPending: isDeleting } = useDeleteCabin();
   const { createNewCabin: duplicatedCabin, isPending: isDuplicating } =
     useCreateCabin();
   const handleDuplicated = () => {
@@ -65,7 +68,7 @@ function CabinRow({ item }) {
     duplicatedCabin(dupItem);
   };
   const handleEdit = () => {
-    setIsEditing((prev) => !prev);
+    setIsEditing(true);
   };
   return (
     <>
@@ -83,17 +86,33 @@ function CabinRow({ item }) {
           <button onClick={handleDuplicated} disabled={isDuplicating}>
             <HiDocumentDuplicate />
           </button>
-          <button onClick={() => deleteCabinHandler(id)}>
-            <HiTrash />
-          </button>
-          <button onClick={handleEdit}>
-            <MdEdit />
-          </button>
+          <Modal>
+            <Modal.Open name="cabin-edit">
+              <Button size="small" onClick={handleEdit}>
+                <MdEdit />
+              </Button>
+            </Modal.Open>
+
+            <Modal.Open name="cabin-delete">
+              <Button size="small">
+                <HiTrash />
+              </Button>
+            </Modal.Open>
+
+            <Modal.Window nameWindow="cabin-edit">
+              <CreateCabinForm editOption={isEditing} editItemData={item} />
+            </Modal.Window>
+
+            <Modal.Window nameWindow="cabin-delete">
+              <ConfirmDelete
+                disabled={isDeleting}
+                resourceName={`'${name}' cabin`}
+                onConfirm={deleteCabinHandler.bind(null,id)}
+              />
+            </Modal.Window>
+          </Modal>
         </div>
       </TableRow>
-      {isEditing && (
-        <CreateCabinForm editOption={isEditing} editItemData={item} />
-      )}
     </>
   );
 }

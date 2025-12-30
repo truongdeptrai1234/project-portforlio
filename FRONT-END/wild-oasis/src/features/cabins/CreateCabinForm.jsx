@@ -29,8 +29,20 @@ function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
     if (!data?.image[0]?.name && editOption) {
       data = { ...data, image: editItemData.image };
     }
-    if (editOption) updateCabin(data, { onSuccess: () => reset() });
-    if (!editOption) createNewCabin(data, { onSuccess: () => reset() });
+    if (editOption)
+      updateCabin(data, {
+        onSuccess: () => {
+          reset();
+          onClose();
+        },
+      });
+    if (!editOption)
+      createNewCabin(data, {
+        onSuccess: () => {
+          reset();
+          onClose();
+        },
+      });
   }
   function onError() {
     console.log(errors);
@@ -116,7 +128,7 @@ function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" onClick={() => onClose?.()}>
           Cancel
         </Button>
         <Button disabled={isWorking}>

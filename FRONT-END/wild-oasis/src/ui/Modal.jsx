@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { cloneElement, createContext, useContext, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
+import useCloseModalByOutsideClick from "../hooks/useCloseModalByOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -52,34 +53,42 @@ const Button = styled.button`
   }
 `;
 const ModalContext = createContext();
-export default function Modal({ children, name }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Modal({ children }) {
+  const [isOpen, setIsOpen] = useState({});
 
   return (
-    <ModalContext.Provider value={{ isOpen, setIsOpen, name }}>
+    <ModalContext.Provider value={{ isOpen, setIsOpen }}>
       {children}
     </ModalContext.Provider>
   );
 }
-function Open({ children }) {
+function Open({ children, name }) {
   const { setIsOpen: open } = useContext(ModalContext);
-  return cloneElement(children, { onClick: () => open(true) });
+  return cloneElement(children, {
+    onClick: () => {
+      children.props.onClick?.(); //if clone has onClick run it first
+      open((prev) => ({ ...prev, [name]: true }));
+    },
+  });
 }
 
 function Window({ children, nameWindow }) {
-  const { name, isOpen, setIsOpen: close } = useContext(ModalContext);
-  if (name !== nameWindow)
-    console.warn(
-      `Modal.Window component name props does not match Modal parent component name props`
-    );
-  if (!isOpen) return null;
+  const { isOpen, setIsOpen: close } = useContext(ModalContext);
+  const { modalRef } = useCloseModalByOutsideClick(nameWindow, close);
+  if (!isOpen[nameWindow]) {
+    return null;
+  }
   return createPortal(
     <Overlay>
-      <StyledModal>
-        <Button onClick={() => close(false)}>
+      <StyledModal ref={modalRef}>
+        <Button
+          onClick={() => close((prev) => ({ ...prev, [nameWindow]: false }))}
+        >
           <HiXMark />
         </Button>
-        ;{cloneElement(children, { onClose: close })}
+        {cloneElement(children, {
+          onClose: () => close((prev) => ({ ...prev, [nameWindow]: false })),
+        })}
       </StyledModal>
     </Overlay>,
     document.body

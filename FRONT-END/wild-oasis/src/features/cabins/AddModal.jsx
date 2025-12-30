@@ -4,8 +4,8 @@ import CreateCabinForm from "./CreateCabinForm";
 
 function AddModal() {
   return (
-    <Modal name="cabin-form">
-      <Modal.Open>
+    <Modal>
+      <Modal.Open name="cabin-form">
         <Button>Add cabin</Button>
       </Modal.Open>
       <Modal.Window nameWindow="cabin-form">

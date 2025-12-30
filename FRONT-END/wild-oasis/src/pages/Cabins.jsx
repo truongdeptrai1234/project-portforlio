@@ -12,6 +12,8 @@ function Cabins() {
       </Row>
       <Row>
         <CabinTable />
+      </Row>
+      <Row type="horizontal">
         <AddModal />
       </Row>
     </>
