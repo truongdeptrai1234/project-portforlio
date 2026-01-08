@@ -10,18 +10,6 @@ import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
-
 const Img = styled.img`
   display: block;
   width: 6.4rem;
@@ -72,47 +60,45 @@ function CabinRow({ item }) {
   };
   return (
     <>
-      <TableRow>
-        <Img src={image} />
-        <Cabin>{name}</Cabin>
-        <div>Can fill up to {maxCapacity}</div>
-        <Price>{formatCurrency(regularPrice)}</Price>
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Can fill up to {maxCapacity}</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
 
-        <Discount>
-          {discount ? formatCurrency(discount) : <span>&mdash;&mdash;</span>}
-        </Discount>
+      <Discount>
+        {discount ? formatCurrency(discount) : <span>&mdash;&mdash;</span>}
+      </Discount>
 
-        <div>
-          <button onClick={handleDuplicated} disabled={isDuplicating}>
-            <HiDocumentDuplicate />
-          </button>
-          <Modal>
-            <Modal.Open name="cabin-edit">
-              <Button size="small" onClick={handleEdit}>
-                <MdEdit />
-              </Button>
-            </Modal.Open>
+      <div>
+        <button onClick={handleDuplicated} disabled={isDuplicating}>
+          <HiDocumentDuplicate />
+        </button>
+        <Modal>
+          <Modal.Open name="cabin-edit">
+            <Button size="small" onClick={handleEdit}>
+              <MdEdit />
+            </Button>
+          </Modal.Open>
 
-            <Modal.Open name="cabin-delete">
-              <Button size="small">
-                <HiTrash />
-              </Button>
-            </Modal.Open>
+          <Modal.Open name="cabin-delete">
+            <Button size="small">
+              <HiTrash />
+            </Button>
+          </Modal.Open>
 
-            <Modal.Window nameWindow="cabin-edit">
-              <CreateCabinForm editOption={isEditing} editItemData={item} />
-            </Modal.Window>
+          <Modal.Window nameWindow="cabin-edit">
+            <CreateCabinForm editOption={isEditing} editItemData={item} />
+          </Modal.Window>
 
-            <Modal.Window nameWindow="cabin-delete">
-              <ConfirmDelete
-                disabled={isDeleting}
-                resourceName={`'${name}' cabin`}
-                onConfirm={deleteCabinHandler.bind(null,id)}
-              />
-            </Modal.Window>
-          </Modal>
-        </div>
-      </TableRow>
+          <Modal.Window nameWindow="cabin-delete">
+            <ConfirmDelete
+              disabled={isDeleting}
+              resourceName={`'${name}' cabin`}
+              onConfirm={deleteCabinHandler.bind(null, id)}
+            />
+          </Modal.Window>
+        </Modal>
+      </div>
     </>
   );
 }
