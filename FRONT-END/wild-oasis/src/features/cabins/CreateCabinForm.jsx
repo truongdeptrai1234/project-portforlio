@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 
-function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
+function CreateCabinForm({ editItemData = {}, onClose }) {
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: editItemData.id
       ? {
@@ -26,17 +26,17 @@ function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
   const isWorking = isEditing || isCreating;
 
   function onSubmit(data) {
-    if (!data?.image[0]?.name && editOption) {
+    if (!data?.image[0]?.name && editItemData.id) {
       data = { ...data, image: editItemData.image };
     }
-    if (editOption)
+    if (editItemData.id)
       updateCabin(data, {
         onSuccess: () => {
           reset();
           onClose();
         },
       });
-    if (!editOption)
+    if (!editItemData.id)
       createNewCabin(data, {
         onSuccess: () => {
           reset();
@@ -120,7 +120,7 @@ function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
           type="file"
           accept="image/*"
           {...register("image", {
-            required: editOption ? false : "This field is required",
+            required: editItemData.id ? false : "This field is required",
           })}
           disabled={isWorking}
         />
@@ -132,7 +132,7 @@ function CreateCabinForm({ editOption, editItemData = {}, onClose }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {editOption ? "Edit cabin" : "Add cabin"}
+          {editItemData.id ? "Edit cabin" : "Add cabin"}
         </Button>
       </FormRow>
     </Form>

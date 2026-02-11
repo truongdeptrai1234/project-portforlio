@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
-import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
-import { HiDocumentDuplicate, HiTrash } from "react-icons/hi2";
-import { MdEdit } from "react-icons/md";
-import { useCreateCabin } from "./useCreateCabin";
+import { HiEllipsisVertical } from "react-icons/hi2";
 import Modal from "../../ui/Modal";
-import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Menu from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -37,27 +34,10 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 function CabinRow({ item }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const { id, image, name, regularPrice, discount, maxCapacity, description } =
-    item;
+  const { id, image, name, regularPrice, discount, maxCapacity } = item;
 
   const { deleteCabinHandler, isPending: isDeleting } = useDeleteCabin();
-  const { createNewCabin: duplicatedCabin, isPending: isDuplicating } =
-    useCreateCabin();
-  const handleDuplicated = () => {
-    const dupItem = {
-      image,
-      name,
-      regularPrice,
-      discount,
-      maxCapacity,
-      description,
-    };
-    duplicatedCabin(dupItem);
-  };
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+
   return (
     <>
       <Img src={image} />
@@ -68,36 +48,21 @@ function CabinRow({ item }) {
       <Discount>
         {discount ? formatCurrency(discount) : <span>&mdash;&mdash;</span>}
       </Discount>
-
+      <Menu.Toggle itemId={id}>
+        <HiEllipsisVertical />
+      </Menu.Toggle>
+      {/* modal popup for menu cabin menu option */}
       <div>
-        <button onClick={handleDuplicated} disabled={isDuplicating}>
-          <HiDocumentDuplicate />
-        </button>
-        <Modal>
-          <Modal.Open name="cabin-edit">
-            <Button size="small" onClick={handleEdit}>
-              <MdEdit />
-            </Button>
-          </Modal.Open>
-
-          <Modal.Open name="cabin-delete">
-            <Button size="small">
-              <HiTrash />
-            </Button>
-          </Modal.Open>
-
-          <Modal.Window nameWindow="cabin-edit">
-            <CreateCabinForm editOption={isEditing} editItemData={item} />
-          </Modal.Window>
-
-          <Modal.Window nameWindow="cabin-delete">
-            <ConfirmDelete
-              disabled={isDeleting}
-              resourceName={`'${name}' cabin`}
-              onConfirm={deleteCabinHandler.bind(null, id)}
-            />
-          </Modal.Window>
-        </Modal>
+        <Modal.Window nameWindow="cabin-edit" id={id}>
+          <CreateCabinForm editItemData={item} />
+        </Modal.Window>
+        <Modal.Window nameWindow="cabin-delete" id={id}>
+          <ConfirmDelete
+            disabled={isDeleting}
+            resourceName={`'${name}' cabin`}
+            onConfirm={deleteCabinHandler.bind(null, id)}
+          />
+        </Modal.Window>
       </div>
     </>
   );

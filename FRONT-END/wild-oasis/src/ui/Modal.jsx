@@ -24,7 +24,7 @@ const Overlay = styled.div`
   height: 100vh;
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
-  z-index: 1000;
+  z-index: 1200;
   transition: all 0.5s;
 `;
 
@@ -53,31 +53,37 @@ const Button = styled.button`
   }
 `;
 const ModalContext = createContext();
+
 export default function Modal({ children }) {
   const [isOpen, setIsOpen] = useState({});
-
+  const [windowId, setWindowId] = useState("");
   return (
-    <ModalContext.Provider value={{ isOpen, setIsOpen }}>
+    <ModalContext.Provider value={{ isOpen, setIsOpen, windowId, setWindowId }}>
       {children}
     </ModalContext.Provider>
   );
 }
 function Open({ children, name }) {
-  const { setIsOpen: open } = useContext(ModalContext);
+  const { setIsOpen: open, setWindowId } = useContext(ModalContext);
+
   return cloneElement(children, {
-    onClick: () => {
+    //id params come from menus button component
+    onClick: (id) => {
       children.props.onClick?.(); //if clone has onClick run it first
+      setWindowId(id);
       open((prev) => ({ ...prev, [name]: true }));
     },
   });
 }
 
-function Window({ children, nameWindow }) {
-  const { isOpen, setIsOpen: close } = useContext(ModalContext);
+function Window({ children, nameWindow, id }) {
+  const { isOpen, setIsOpen: close, windowId } = useContext(ModalContext);
   const { modalRef } = useCloseModalByOutsideClick(nameWindow, close);
+
   if (!isOpen[nameWindow]) {
     return null;
   }
+  if (id && id !== windowId) return null;
   return createPortal(
     <Overlay>
       <StyledModal ref={modalRef}>
@@ -91,7 +97,7 @@ function Window({ children, nameWindow }) {
         })}
       </StyledModal>
     </Overlay>,
-    document.body
+    document.body,
   );
 }
 Modal.Open = Open;

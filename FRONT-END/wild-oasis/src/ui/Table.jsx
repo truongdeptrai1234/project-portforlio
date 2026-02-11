@@ -6,7 +6,6 @@ const StyledTable = styled.div`
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
-  overflow: hidden;
 `;
 
 const CommonRow = styled.div`
@@ -18,7 +17,7 @@ const CommonRow = styled.div`
 `;
 
 const StyledHeader = styled(CommonRow)`
-  padding: 1.6rem 2.4rem;
+  padding: 1.6rem 3rem;
 
   background-color: var(--color-grey-50);
   border-bottom: 1px solid var(--color-grey-100);
@@ -30,7 +29,7 @@ const StyledHeader = styled(CommonRow)`
 
 const StyledRow = styled(CommonRow)`
   padding: 1.2rem 2.4rem;
-
+  position: relative;
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
@@ -78,10 +77,10 @@ function Body({ data, render }) {
   if (!data.length) return <Empty>No item founded at the moment</Empty>;
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
-function Row({ children }) {
+function Row({ children, id }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" columns={columns} data-id={id}>
       {children}
     </StyledRow>
   );
