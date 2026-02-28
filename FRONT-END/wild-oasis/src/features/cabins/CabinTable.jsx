@@ -7,12 +7,41 @@ import { MdEdit } from "react-icons/md";
 import Modal from "../../ui/Modal";
 import { HiDocumentDuplicate, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
+import { useSearchParams } from "react-router-dom";
 
 function CabinTable() {
   const { cabins, isPending, error } = useCabin();
   const { createNewCabin: duplicatedCabin, isPending: isDuplicating } =
     useCreateCabin();
+  const [searchParams] = useSearchParams();
 
+  const handleCabinListData = () => {
+    let cabinTemp = [...cabins];
+    const filter = searchParams.get("filter");
+    const sort = searchParams.get("sort");
+
+    //Filter
+    if (filter === "discount")
+      cabinTemp = cabins.filter((item) => !!item.discount);
+    if (filter === "full-price")
+      cabinTemp = cabins.filter((item) => !item.discount);
+    //Sort
+    if (sort && sort.includes("price")) {
+      cabinTemp.sort((a, b) =>
+        sort.indexOf("asc") > 0
+          ? a.regularPrice - b.regularPrice
+          : b.regularPrice - a.regularPrice,
+      );
+    }
+    if (sort && sort.includes("name")) {
+      cabinTemp.sort((a, b) =>
+        sort.indexOf("az") > 0
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name),
+      );
+    }
+    return cabinTemp;
+  };
   const handleDuplicated = (id) => {
     const { image, name, regularPrice, discount, maxCapacity, description } =
       cabins.find((i) => i.id === id);
@@ -40,7 +69,8 @@ function CabinTable() {
       <Menu>
         <Modal>
           <Table.Body
-            data={cabins}
+            itemType="cabin"
+            data={handleCabinListData()}
             render={(cb) => (
               <Table.Row key={cb.id} id={cb.id}>
                 <CabinRow item={cb} />

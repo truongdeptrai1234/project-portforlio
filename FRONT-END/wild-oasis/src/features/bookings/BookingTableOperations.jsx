@@ -1,12 +1,11 @@
-import SortBy from "../../ui/SortBy";
 import Filter from "../../ui/Filter";
 import TableOperations from "../../ui/TableOperations";
+import Sort from "../../ui/Sort";
 
 function BookingTableOperations() {
   return (
-    <TableOperations>
+    <TableOperations flex="vertical">
       <Filter
-        filterField="status"
         options={[
           { value: "all", label: "All" },
           { value: "checked-out", label: "Checked out" },
@@ -15,7 +14,7 @@ function BookingTableOperations() {
         ]}
       />
 
-      <SortBy
+      <Sort
         options={[
           { value: "startDate-desc", label: "Sort by date (recent first)" },
           { value: "startDate-asc", label: "Sort by date (earlier first)" },

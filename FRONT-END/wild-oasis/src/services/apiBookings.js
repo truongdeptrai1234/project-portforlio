@@ -1,10 +1,30 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+export async function getBookings(filter, sort) {
+  let query = supabase
+    .from("bookings")
+    .select("*, cabins(name), guests(fullName,email)");
+  //filter
+  if (filter && filter !== "all") {
+    query = query.eq("status", filter);
+  }
+  //sortby
+  const sortQuery = sort?.split("-") || "";
+  if (sort && sort.includes(sortQuery[0])) {
+    query = query.order(sortQuery[0], {
+      ascending: sortQuery[1] === "asc",
+    });
+  }
+  const { data, error } = await query;
+  if (error) throw new Error("Booking list not found");
+  return data;
+}
+
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")
-    .select("*, cabins(*), guests(*)")
+    .select("*, cabins(name), guests(fullName,email)")
     .eq("id", id)
     .single();
 
@@ -55,7 +75,7 @@ export async function getStaysTodayActivity() {
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
     .or(
-      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`,
     )
     .order("created_at");
 

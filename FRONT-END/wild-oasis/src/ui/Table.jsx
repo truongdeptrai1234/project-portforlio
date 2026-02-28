@@ -73,8 +73,9 @@ function Header({ children }) {
     </StyledHeader>
   );
 }
-function Body({ data, render }) {
-  if (!data.length) return <Empty>No item founded at the moment</Empty>;
+function Body({ data, render, itemType }) {
+  if (!data?.length)
+    return <Empty>Something wrong. No data founded at the moment </Empty>;
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 function Row({ children, id }) {
