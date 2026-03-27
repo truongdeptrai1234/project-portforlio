@@ -37,7 +37,7 @@ function CabinRow({ item }) {
   const { id, image, name, regularPrice, discount, maxCapacity } = item;
 
   const { deleteCabinHandler, isPending: isDeleting } = useDeleteCabin();
-
+  console.log("cabin render");
   return (
     <>
       <Img src={image} />

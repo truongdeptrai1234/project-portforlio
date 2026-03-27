@@ -37,6 +37,7 @@ const FilterButton = styled.button`
 export default function Filter({ options }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
+
   return (
     <StyledFilter>
       {options.map((item) => (
@@ -46,6 +47,7 @@ export default function Filter({ options }) {
           onClick={() =>
             setSearchParams((prev) => {
               prev.set("filter", item.value);
+              prev.set('page',1);
               return prev;
             })
           }

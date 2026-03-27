@@ -39,7 +39,7 @@ const StyledBody = styled.section`
   margin: 0.4rem 0;
 `;
 
-const Footer = styled.footer`
+const StyledFooter = styled.footer`
   background-color: var(--color-grey-50);
   display: flex;
   justify-content: center;
@@ -73,7 +73,7 @@ function Header({ children }) {
     </StyledHeader>
   );
 }
-function Body({ data, render, itemType }) {
+function Body({ data, render }) {
   if (!data?.length)
     return <Empty>Something wrong. No data founded at the moment </Empty>;
   return <StyledBody>{data.map(render)}</StyledBody>;
@@ -86,7 +86,11 @@ function Row({ children, id }) {
     </StyledRow>
   );
 }
+function Footer({ children }) {
+  return <StyledFooter>{children}</StyledFooter>;
+}
 Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
+Table.Footer = Footer;
 export default Table;

@@ -11,6 +11,7 @@ function Sort({ options, type }) {
       onChange={(e) =>
         setSearchParams((prev) => {
           prev.set("sort", e.target.value);
+          prev.set("page", 1);
           return prev;
         })
       }

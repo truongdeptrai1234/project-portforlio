@@ -78,13 +78,13 @@ function Menu({ children }) {
 }
 function Button({ children, icon, onClick }) {
   const { setActiveMenu, currentEleWithMenu } = useContext(MenuContext);
-  function cabinRowMenuListButtonHandler() {
+  function tableRowMenuListButtonHandler() {
     setActiveMenu(false);
     onClick(+currentEleWithMenu.ele.dataset.id);
   }
   return (
     <li>
-      <StyledButton onClick={cabinRowMenuListButtonHandler}>
+      <StyledButton onClick={tableRowMenuListButtonHandler}>
         {icon}
         <span>{children}</span>
       </StyledButton>
@@ -101,7 +101,14 @@ function Toggle({ children, itemId }) {
     const rect = toggleRef.current.getBoundingClientRect();
     setCurEleWithMenu(() => ({
       ele: toggleRef.current.closest("div"),
-      position: { x: (rect.right - rect.left) / 4, y: rect.height },
+      position: {
+        x: (rect.right - rect.left) / 4,
+        y:
+          rect.top -
+          toggleRef.current.closest("div").getBoundingClientRect().top +
+          rect.height +
+          1,
+      },
     }));
 
     if ((id && itemId !== +id) || itemId === +id)
@@ -115,20 +122,25 @@ function Toggle({ children, itemId }) {
     </StyledToggle>
   );
 }
-function List({ children }) {
+function List({ children, itemId }) {
   const {
     activeMenu,
     currentEleWithMenu,
     setActiveMenu: closeMenu,
   } = useContext(MenuContext);
-  const { modalRef: menuCabinRef } = useCloseModalByOutsideClick(
+  const { modalRef: menuListRef } = useCloseModalByOutsideClick(
     null,
     closeMenu,
   );
-  if (!activeMenu || !currentEleWithMenu.ele) return null;
+  if (
+    !activeMenu ||
+    !currentEleWithMenu.ele ||
+    (+currentEleWithMenu.ele.dataset.id !== itemId && itemId)
+  )
+    return null;
 
   return createPortal(
-    <StyledList ref={menuCabinRef} position={currentEleWithMenu.position}>
+    <StyledList ref={menuListRef} position={currentEleWithMenu.position}>
       {children}
     </StyledList>,
     currentEleWithMenu.ele,

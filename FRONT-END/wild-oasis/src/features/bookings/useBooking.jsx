@@ -5,6 +5,6 @@ export const useBooking = (bookingId) => {
   return useQuery({
     queryKey: ["bookings", bookingId],
     queryFn: () => getBooking(bookingId),
-    retry: 2,
+    retry: false,
   });
 };
