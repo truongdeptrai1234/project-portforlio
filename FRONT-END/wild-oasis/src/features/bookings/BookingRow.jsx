@@ -12,10 +12,14 @@ import {
   HiArrowUpOnSquare,
   HiEllipsisVertical,
   HiEye,
+  HiTrash,
 } from "react-icons/hi2";
 import Menu from "../../ui/Menus";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteBooking } from "./useDeleteBooking";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -60,6 +64,7 @@ function BookingRow({
 }) {
   const navigate = useNavigate();
   const { checkout } = useCheckout();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -120,7 +125,18 @@ function BookingRow({
             Check out
           </Menu.Button>
         )}
+
+        <Modal.Open name="booking-delete">
+          <Menu.Button icon={<HiTrash />}>Delete</Menu.Button>
+        </Modal.Open>
       </Menu.List>
+      <Modal.Window nameWindow="booking-delete" id={bookingId}>
+        <ConfirmDelete
+          resourceName="booking"
+          disabled={isDeleting}
+          onConfirm={() => deleteBooking(bookingId)}
+        />
+      </Modal.Window>
     </Table.Row>
   );
 }
