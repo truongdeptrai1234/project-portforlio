@@ -14,6 +14,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
 import CheckinBooking from "./features/check-in-out/CheckinBooking";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import PublicLoginRoute from "./ui/PublicLoginRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +34,14 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="account" element={<Account />} />
@@ -44,7 +53,14 @@ function App() {
             <Route path="cabins" element={<Cabins />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <PublicLoginRoute>
+                <Login />
+              </PublicLoginRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
       <Toaster

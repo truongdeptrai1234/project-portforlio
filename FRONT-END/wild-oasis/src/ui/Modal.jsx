@@ -80,10 +80,7 @@ function Window({ children, nameWindow, id }) {
   const { isOpen, setIsOpen: close, windowId } = useContext(ModalContext);
   const { modalRef } = useCloseModalByOutsideClick(nameWindow, close);
 
-  if (!isOpen[nameWindow]) {
-    return null;
-  }
-  if (id && id !== windowId) return null;
+  if ((id && id !== windowId) || !isOpen[nameWindow]) return null;
   return createPortal(
     <Overlay>
       <StyledModal ref={modalRef}>

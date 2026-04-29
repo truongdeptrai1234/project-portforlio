@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
+
 const StyledLayout = styled.div`
   display: grid;
   grid-template-columns: 25rem 1fr;
